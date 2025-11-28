@@ -27,7 +27,10 @@ The `setTimeout()` function takes a minimum of two arguments: the function to ex
 | delay            | number   | The time, in milliseconds (ms), to wait before execution.    |
 | arg1, arg2, ...  | optional | Arguments that are passed directly to `func` when it executes. |
 
-## Example — Basic setTimeout Usage
+
+```
+
+## 📝 Example: Stopping an Interval
 
 ```js
 console.log("A: Start of script"); // Runs immediately
@@ -39,3 +42,24 @@ let timerID = setTimeout((message) => {
 console.log("B: End of script"); // Runs immediately after scheduling the timer
 
 // Output Order: A, B, C (after 3 seconds)
+---
+```
+## 🚫 Clearing the Timer
+
+To prevent the function from running before the delay expires, you must use the `clearTimeout()` function with the ID returned by `setTimeout()`.
+
+### `clearTimeout()`
+
+* **Purpose:** Cancels the scheduled execution.
+* **Syntax:** `clearTimeout(timerID);`
+
+### Cancellation Example
+
+```javascript
+let countdownTimer = setTimeout(() => {
+    console.log("This message will never print.");
+}, 5000);
+
+// If this line runs before 5 seconds pass, the timer is cancelled.
+clearTimeout(countdownTimer); 
+console.log("Timer successfully cancelled.");
