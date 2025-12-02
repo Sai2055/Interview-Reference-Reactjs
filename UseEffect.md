@@ -50,3 +50,73 @@ useEffect(() => {
     subscription.unsubscribe();
   };
 }, [source]);
+```
+# 🧹 Cleanup Function in `useEffect`
+
+The `return` statement inside the `useEffect` Hook defines the **cleanup function**.  
+This function is essential for preventing **memory leaks** and ensuring your application behaves correctly by cleaning up whatever the effect sets up.
+
+---
+
+## 🧼 Purpose of the Cleanup Function
+
+The cleanup function’s main job is to **undo or stop** whatever the main effect initialized.
+
+---
+
+## 📌 What Cleanup Handles
+
+| Situation        | What the Effect Sets Up                                   | What the Cleanup Function Does                                   |
+|------------------|------------------------------------------------------------|-------------------------------------------------------------------|
+| **Subscriptions** | Subscribes to chat service or external data store.         | Unsubscribes from the service.                                   |
+| **Event Listeners** | Attaches event listeners like `click`, `scroll`, `resize`. | Removes listeners using `removeEventListener`.                   |
+| **Timers** | Creates `setTimeout` or `setInterval`. | Clears using `clearTimeout` or `clearInterval`.                   |
+| **Data Fetching** | Starts a fetch request or async process.                   | Cancels request with `AbortController` if component unmounts.    |
+
+---
+
+## ⏱️ When Does the Cleanup Function Run?
+
+The cleanup function runs in **two key scenarios**:
+
+### 1️⃣ **Before Re-running the Effect**
+If dependencies change, React:
+
+1. Runs cleanup of the old effect  
+2. Runs the new effect function  
+
+This prevents old logic from running alongside the new one.
+
+---
+
+### 2️⃣ **On Component Unmount**
+When the component gets removed from the DOM:
+
+- The cleanup function runs automatically  
+- Prevents timers, listeners, or subscriptions from running in memory after the component is gone  
+
+---
+
+# 🧠 Example: Cleaning Up a Timer
+
+Without cleanup, a `setInterval` would continue running even after the component is unmounted—causing **memory leaks and bugs**.
+
+```js
+import React, { useEffect } from 'react';
+
+function Timer() {
+  useEffect(() => {
+    // ⭐️ Effect Setup: Starts the timer
+    const intervalId = setInterval(() => {
+      console.log('Timer is still ticking!');
+    }, 1000);
+
+    // 🧹 Cleanup Return: Stops the timer
+    return () => {
+      console.log('Timer has been cleaned up.');
+      clearInterval(intervalId); // <-- Cleanup action
+    };
+  }, []); // Runs once on mount, cleans up on unmount.
+  
+  return <h1>I am a Timer Component</h1>;
+}
