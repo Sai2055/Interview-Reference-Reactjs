@@ -43,6 +43,7 @@ function App() {
     </UserContext.Provider>
   );
 }
+
 ````
 ### 🔹 Step 3: Consume the Context
 ```
