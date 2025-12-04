@@ -135,10 +135,12 @@ const DeleteConfirmation = () => {
   );
 };
 ```
-
 🟢 Use When: State is local, does not affect siblings or global UI.
+
+
+### 🔹 Scenario B: useContext (Global, Low Frequency)
+
 ```
-🔹 Scenario B: useContext (Global, Low Frequency)
 function ProfileHeader() {
   const { user } = useAuth(); // useAuth -> useContext
 
@@ -151,6 +153,7 @@ function ProfileHeader() {
 Many components read the same data
 
 The data changes rarely (login/logout, theme toggle)
+
 
 🔹 Scenario C: Redux Toolkit (High Frequency / Complex)
 ```
